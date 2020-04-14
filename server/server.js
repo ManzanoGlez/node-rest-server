@@ -30,5 +30,3 @@ app.get("/", (req, res) => {
 
 //Routes Api Rest
 app.use(require("./routes/users"));
-
-
