@@ -45,11 +45,10 @@ app.patch("/user", (req, res) => {
 });
 
 app.delete("/user/:id", (req, res) => {
-
-    let id = req.params.id;
+  let id = req.params.id;
 
   res.json("delete user " + id);
-
+});
 
 
 app.listen(process.env.PORT,()=>{
