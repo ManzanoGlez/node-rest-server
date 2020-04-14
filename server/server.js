@@ -12,7 +12,7 @@ app.use(bodyParser.json())
 
 
 app.get("/", (req, res) => {
-  res.json("Express Rest Server");
+  res.status(200).json("Express Rest Server");
 });
 
 app.get("/user", (req, res)=> { 
