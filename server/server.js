@@ -44,10 +44,11 @@ app.patch("/user", (req, res) => {
   res.json("patch user");
 });
 
-app.delete("/user", (req, res) => {
-  res.json("delete user");
-});
+app.delete("/user/:id", (req, res) => {
 
+    let id = req.params.id;
+
+  res.json("delete user " + id);
 
 
 
