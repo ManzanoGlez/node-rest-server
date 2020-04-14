@@ -1,4 +1,5 @@
 require("./config/config");
+
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
@@ -16,8 +17,7 @@ app.get("/", (req, res) => {
   res.json("Express Rest Server");
 });
 
-
-app.get("/user", (req, res)=> {
+app.get("/user", (req, res)=> { 
   res.json("get user");
 });
 
