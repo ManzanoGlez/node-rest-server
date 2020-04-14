@@ -4,8 +4,6 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 
-const PORT = 3000;
-
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
  
@@ -54,5 +52,5 @@ app.delete("/user", (req, res) => {
 
 
 app.listen(process.env.PORT,()=>{
-    console.log(`Trabajando con puerto ${PORT}`)
+    console.log(`Trabajando con puerto ${process.env.PORT}`);
 });
