@@ -15,5 +15,11 @@ app.use(require("./auth"));
 //Users
 app.use(require("./users"));
 
+//Categories
+app.use(require("./categories"));
+
+//Product
+app.use(require("./products"));
+
 
 module.exports = app;

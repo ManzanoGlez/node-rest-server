@@ -80,6 +80,9 @@ app.post("/auth/google/login", async (req, res) => {
                                 { data: user }, process.env.SEED, { expiresIn: process.env.TOKEN_EXPIRATION }
                               );
 
+                              //update img ?
+
+
                               return res.status(200).json({
                                 success: {
                                   user,
