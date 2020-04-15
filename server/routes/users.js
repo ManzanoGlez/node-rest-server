@@ -4,39 +4,43 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const _ = require("underscore");
 const User = require('../models/User');
+const { checkToken,isAdminRole} = require('../middleware/authentication');
 
 
 
-app.get("/user", (req, res) => {
-    
-let since = Number(req.query.since) || 0;
-let perPage = Number(req.query.perPage) || 5;
+app.get("/user", checkToken, (req, res) => {
 
-let filter = {state:true};
+  
+ // return res.status(200).json(req.user._id);
 
-    User.find(filter, "name email role state google img")
-      .skip(since)
-      .limit(perPage)
-      .exec((e, users) => {
-        if (e) res.status(400).json(e);
 
-        User.countDocuments(filter, (e, count) => {
-          if (e) {
-            return res.status(400).json(e);
-          }
+  let since = Number(req.query.since) || 0;
+  let perPage = Number(req.query.perPage) || 5;
 
-          return res.status(201).json({
-            success: {
-              data: users,
-              totalRows: count,
-            },
-          });
+  let filter = { state: true };
+
+  User.find(filter, "name email role state google img")
+    .skip(since)
+    .limit(perPage)
+    .exec((e, users) => {
+      if (e) res.status(400).json(e);
+
+      User.countDocuments(filter, (e, count) => {
+        if (e) {
+          return res.status(400).json(e);
+        }
+
+        return res.status(201).json({
+          success: {
+            data: users,
+            totalRows: count,
+          },
         });
       });
-
+    });
 });
 
-app.post("/user", (req, res) => {
+app.post("/user",[checkToken,isAdminRole], (req, res) => {
   let request = req.body;
 
     let user = new User({
@@ -55,55 +59,53 @@ app.post("/user", (req, res) => {
     });
  });
 
-app.put("/user/:id", (req, res) => {
-
+app.put("/user/:id", [checkToken, isAdminRole], (req, res) => {
   let id = req.params.id;
-  let request = _.pick(req.body,['name','email','img','role','state']);
+  let request = _.pick(req.body, ["name", "email", "img", "role", "state"]);
 
-  User.findByIdAndUpdate(id,request,{new:true,runValidators:true},(e,user)=>{
+  User.findByIdAndUpdate(
+    id,
+    request,
+    { new: true, runValidators: true },
+    (e, user) => {
+      if (e) {
+        return res.status(400).json(e);
+      }
 
-    if (e) {
-    return res.status(400).json(e);
+      return res.status(200).json({ success: user });
     }
-
-    return res.status(200).json({ success: user });
-  });
-
+  );
 });
 
-app.patch("/user", (req, res) => {
+app.patch("/user", [checkToken, isAdminRole], (req, res) => {
   res.json("patch user");
 });
 
-app.delete("/user/:id", (req, res) => {
+app.delete("/user/:id", [checkToken, isAdminRole], (req, res) => {
+  // Borrado literal
 
-// Borrado literal
+  //   let id = req.params.id;
 
-//   let id = req.params.id;
+  //   User.findByIdAndRemove(id, (e, user) => {
+  //     if (e) return res.status(400).json(e);
 
-//   User.findByIdAndRemove(id, (e, user) => {
-//     if (e) return res.status(400).json(e);
+  //     if (!user)
+  //      return res.status(404).json({ error:{ message:"Usuario no encontrado" }});
 
-//     if (!user) 
-//      return res.status(404).json({ error:{ message:"Usuario no encontrado" }});
-    
-    
-//     return res.status(200).json({ success: user });
-//   });
+  //     return res.status(200).json({ success: user });
+  //   });
 
-//Borrado logico
+  //Borrado logico
 
   let id = req.params.id;
- 
-  User.findByIdAndUpdate(id, {state:false}, { new: true }, (e, user) => {
+
+  User.findByIdAndUpdate(id, { state: false }, { new: true }, (e, user) => {
     if (e) {
       return res.status(400).json(e);
     }
 
     return res.status(200).json({ success: user });
   });
-
-
 });
 
 
