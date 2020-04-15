@@ -6,10 +6,6 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-//index
-app.get("/", (req, res) => {
-  res.status(200).json("Express Rest Server");
-});
 
 //Routes Api Rest
 
