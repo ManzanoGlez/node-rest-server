@@ -2,8 +2,7 @@ const jwt = require("jsonwebtoken");
 
 
 //===============================
-//Check token
-//===============================
+//Check token in body=================
 
 const checkToken = (req,res,next)=>{
 
@@ -24,6 +23,30 @@ jwt.verify(token, process.env.SEED, (err, decoded) => {
 }
 
 
+//===============================
+//Check token by param url
+//===============================
+
+const checkTokenURL = (req,res,next)=>{
+
+let token = req.query.token;
+
+jwt.verify(token, process.env.SEED, (err, decoded) => {
+  if (err) {
+    return res.status(401).json({ error: {
+       message: "Not authenticated",
+       code:err
+     }});
+  }
+
+    req.user = decoded.data;
+
+    next();
+});
+}
+
+
+
 const isAdminRole = (req,res,next)=>{
 
     if(req.user.role === 'ADMIN'){
@@ -38,5 +61,7 @@ const isAdminRole = (req,res,next)=>{
 
 
 module.exports = {
-    checkToken,isAdminRole
-}
+  checkToken,
+  isAdminRole,
+  checkTokenURL,
+};

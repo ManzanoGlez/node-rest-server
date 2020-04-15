@@ -21,5 +21,10 @@ app.use(require("./categories"));
 //Product
 app.use(require("./products"));
 
+//Uploads
+app.use(require("./uploads"));
+
+//Pictures
+app.use(require("./pictures"));
 
 module.exports = app;

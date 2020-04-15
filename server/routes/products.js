@@ -49,7 +49,8 @@ app.get("/products/search/:search", checkToken, (req, res) => {
     let regex = new RegExp(search,'i')
 
     let filter = { 
-        name: regex    };
+        name: regex  
+       };
 
     Products.find(filter)
         .sort('name')
